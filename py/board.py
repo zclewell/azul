@@ -1,3 +1,5 @@
+import json
+
 from magic import rotate
 from copy import deepcopy
 
@@ -16,11 +18,10 @@ class Board():
 
     def __str__(self):
         str_rep = ''
-        for row_idx in range(ROWS):
-            str_rep = str_rep + \
-                list(
-                    map(lambda x: 1 * x, self._board[row_idx])).__str__() + '\n'
-        return str_rep[:-1]
+        for row in self.to_int():
+            str_rep = str_rep + row.__str__() + '\n'
+
+        return str_rep
 
     def place(self, row, col):
         assert row < ROWS
@@ -103,3 +104,9 @@ class Board():
             ALL_TILES_FOR_COLOR_BONUS_MULTIPLIER
 
         return bonus_points
+
+    def dumps(self):
+        return json.dumps(self.to_int())
+
+    def to_int(self):
+        return [list(map(lambda x: 1 * x, self._board[row_idx])) for row_idx in range(ROWS)]
